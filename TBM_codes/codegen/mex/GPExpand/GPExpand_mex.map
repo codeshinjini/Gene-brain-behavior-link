@@ -1,0 +1,10 @@
+MEX {
+	global:
+		mexFunction;
+		emlrtMexFcnProperties;
+		GPExpand;
+		GPExpand_initialize;
+		GPExpand_terminate;
+	local:
+		*;
+};

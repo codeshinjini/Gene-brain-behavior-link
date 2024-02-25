@@ -1,0 +1,81 @@
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="1,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">function</span> <span class="var type1" id="S2T4U3">Y</span> = DGradient(<span class="var type1" id="S3T1U6">X</span>, <span class="var type1" id="S4T2U7">Dim</span>, <span class="var type1" id="S5T2U8">Spacing</span>, <span class="var type1" id="S6T3U9">Method</span>)  <span class="comment">%#ok&lt;STOUT,INUSD&gt;</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,2" id="srcline2"> 2</a></span><span class="line"><span class="comment">% Gradient along a dimension</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,3" id="srcline3"> 3</a></span><span class="line"><span class="comment">% Y = DGradient(X, Dim, Spacing, Method)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,4" id="srcline4"> 4</a></span><span class="line"><span class="comment">% INPUT:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,5" id="srcline5"> 5</a></span><span class="line"><span class="comment">%   X:   Real DOUBLE array.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,6" id="srcline6"> 6</a></span><span class="line"><span class="comment">%   Spacing: Scalar or vector of the length SIZE(X, Dim).</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,7" id="srcline7"> 7</a></span><span class="line"><span class="comment">%        A scalar value is the distance between all points, while a vector</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,8" id="srcline8"> 8</a></span><span class="line"><span class="comment">%        contains all time points, such that DIFF(Spacing) are the distances.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,9" id="srcline9"> 9</a></span><span class="line"><span class="comment">%        For equally spaced input a scalar Spacing is much faster.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,10" id="srcline10">10</a></span><span class="line"><span class="comment">%        Optional, default: 1.0</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,11" id="srcline11">11</a></span><span class="line"><span class="comment">%   Dim: Dimension to operate on.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,12" id="srcline12">12</a></span><span class="line"><span class="comment">%        Optional, default: [] (1st non-singelton dimension).</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,13" id="srcline13">13</a></span><span class="line"><span class="comment">%   Method: String, order of the applied method for unevenly spaced X:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,14" id="srcline14">14</a></span><span class="line"><span class="comment">%        '1stOrder', faster centered differences as in Matlab's GRADIENT.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,15" id="srcline15">15</a></span><span class="line"><span class="comment">%        '2ndOrder', 2nd order accurate centered differences.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,16" id="srcline16">16</a></span><span class="line"><span class="comment">%        On the edges forward and backward difference are used.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,17" id="srcline17">17</a></span><span class="line"><span class="comment">%        Optional, default: '1stOrder'.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,18" id="srcline18">18</a></span><span class="line"><span class="comment">%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,19" id="srcline19">19</a></span><span class="line"><span class="comment">% OUTPUT:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,20" id="srcline20">20</a></span><span class="line"><span class="comment">%   Y:   Gradient of X, same size as X.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,21" id="srcline21">21</a></span><span class="line"><span class="comment">%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,22" id="srcline22">22</a></span><span class="line"><span class="comment">% EXAMPLES:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,23" id="srcline23">23</a></span><span class="line"><span class="comment">%   t = cumsum(rand(1, 100)) + 0.01;  t = 2*pi * t ./ max(t);</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,24" id="srcline24">24</a></span><span class="line"><span class="comment">%   x = sin(t);</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,25" id="srcline25">25</a></span><span class="line"><span class="comment">%   dx1 = DGradient(x, t, 2, '1stOrder');</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,26" id="srcline26">26</a></span><span class="line"><span class="comment">%   dx2 = DGradient(x, t, 2, '2ndOrder');</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,27" id="srcline27">27</a></span><span class="line"><span class="comment">%   dx  = cos(t);          % Analytic solution</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,28" id="srcline28">28</a></span><span class="line"><span class="comment">%   h = plot(t, dx, t, dx1, 'or', t, dx2, 'og');  axis('tight');</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,29" id="srcline29">29</a></span><span class="line"><span class="comment">%   title('cos(x) and DGradient(sin(x))');</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,30" id="srcline30">30</a></span><span class="line"><span class="comment">%   legend(h, {'analytic', '1st order', '2nd order'}, 'location', 'best');</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,31" id="srcline31">31</a></span><span class="line"><span class="comment">%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,32" id="srcline32">32</a></span><span class="line"><span class="comment">% NOTES:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,33" id="srcline33">33</a></span><span class="line"><span class="comment">% - There are a lot of other derivation tools in the FEX. This function is</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,34" id="srcline34">34</a></span><span class="line"><span class="comment">%   faster, e.g. 25% faster than dqdt and 10 to 16 times faster than Matlab's</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,35" id="srcline35">35</a></span><span class="line"><span class="comment">%   GRADIENT. In addition it works with multi-dim arrays, on a specific</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,36" id="srcline36">36</a></span><span class="line"><span class="comment">%   dimension only, and can use a 2nd order method for unevenly spaced data.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,37" id="srcline37">37</a></span><span class="line"><span class="comment">% - This function does not use temporary memory for evenly spaced data and if</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,38" id="srcline38">38</a></span><span class="line"><span class="comment">%   a single vector is processed. Otherwise the 1st-order method needs one and</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,39" id="srcline39">39</a></span><span class="line"><span class="comment">%   the 2nd-order method 3 temporary vectors of the length of the processed</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,40" id="srcline40">40</a></span><span class="line"><span class="comment">%   dimension.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,41" id="srcline41">41</a></span><span class="line"><span class="comment">% - Matlab's GRADIENT processes all dimensions ever, while DGradient operates on</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,42" id="srcline42">42</a></span><span class="line"><span class="comment">%   the specified dimension only.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,43" id="srcline43">43</a></span><span class="line"><span class="comment">% - 1st order centered difference:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,44" id="srcline44">44</a></span><span class="line"><span class="comment">%     y(i) = (x(i+1) - x(i-1) / (s(i+1) - s(i-1))</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,45" id="srcline45">45</a></span><span class="line"><span class="comment">% - 2nd order centered difference:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,46" id="srcline46">46</a></span><span class="line"><span class="comment">%     y(i) = ((x(i+1) * (s(i)-s(i-1)) / (s(i+1)-s(i))) -</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,47" id="srcline47">47</a></span><span class="line"><span class="comment">%             (x(i-1) * (s(i+1)-s(i)) / (s(i)-s(i-1)))) / (s(i+1)-s(i-1))</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,48" id="srcline48">48</a></span><span class="line"><span class="comment">%            + x(i) * (1.0 / (s(i)-s(i-1)) - 1.0 / (s(i+1)-s(i)))</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,49" id="srcline49">49</a></span><span class="line"><span class="comment">%   For evenly spaced X, both methods reply equal values.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,50" id="srcline50">50</a></span><span class="line"><span class="comment">%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,51" id="srcline51">51</a></span><span class="line"><span class="comment">% COMPILE:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,52" id="srcline52">52</a></span><span class="line"><span class="comment">%   mex -O DGradient.c</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,53" id="srcline53">53</a></span><span class="line"><span class="comment">% Consider C99 comments on Linux:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,54" id="srcline54">54</a></span><span class="line"><span class="comment">%   mex -O CFLAGS="\$CFLAGS -std=c99" DGradient.c</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,55" id="srcline55">55</a></span><span class="line"><span class="comment">% Pre-compiled Mex: http://www.n-simon.de/mex</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,56" id="srcline56">56</a></span><span class="line"><span class="comment">% Run the unit test uTest_DGradient after compiling.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,57" id="srcline57">57</a></span><span class="line"><span class="comment">%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,58" id="srcline58">58</a></span><span class="line"><span class="comment">% Tested: Matlab 6.5, 7.7, 7.8, WinXP, 32bit</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,59" id="srcline59">59</a></span><span class="line"><span class="comment">%         Compiler: LCC2.4/3.8, BCC5.5, OWC1.8, MSVC2008</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,60" id="srcline60">60</a></span><span class="line"><span class="comment">% Assumed Compatibility: higher Matlab versions, Mac, Linux, 64bit</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,61" id="srcline61">61</a></span><span class="line"><span class="comment">% Author: Jan Simon, Heidelberg, (C) 2011 matlab.THISYEAR(a)nMINUSsimon.de</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,62" id="srcline62">62</a></span><span class="line"><span class="comment">%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,63" id="srcline63">63</a></span><span class="line"><span class="comment">% See also GRADIENT, DIFF.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,64" id="srcline64">64</a></span><span class="line"><span class="comment">% FEX: central_diff (#12 Robert A. Canfield)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,65" id="srcline65">65</a></span><span class="line"><span class="comment">%      derivative (#28920, Scott McKinney)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,66" id="srcline66">66</a></span><span class="line"><span class="comment">%      movingslope (#16997, John D'Errico)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,67" id="srcline67">67</a></span><span class="line"><span class="comment">%      diffxy (#29312, Darren Rowland)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,68" id="srcline68">68</a></span><span class="line"><span class="comment">%      dqdt (#11965, Geoff Wawrzyniak)</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,69" id="srcline69">69</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,70" id="srcline70">70</a></span><span class="line"><span class="comment">% $JRev: R0c V:003 Sum:RkNcmbCGEJGT Date:02-Jan-2010 02:41:46 $</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,71" id="srcline71">71</a></span><span class="line"><span class="comment">% $License: BSD $</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,72" id="srcline72">72</a></span><span class="line"><span class="comment">% $File: Tools\Mex\Source\DGradient.c $</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,73" id="srcline73">73</a></span><span class="line"><span class="comment">% History:</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,74" id="srcline74">74</a></span><span class="line"><span class="comment">% 001: 30-Dec-2010 22:42, First version published under BSD license.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,75" id="srcline75">75</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,76" id="srcline76">76</a></span><span class="line"><span class="comment">% This is a dummy file to support Matlab's HELP.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,77" id="srcline77">77</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="1,78" id="srcline78">78</a></span><span class="line">error([<span class="mxinfo" id="T5:U6"><span class="string">'JSimon:'</span></span>, <span class="message error" id="M1F1C">mfilename</span>, <span class="string">':NoMex'</span>], <span class="keyword">...</span></span></span>
+<span class="srcline"><span class="lineno"><a href="1,79" id="srcline79">79</a></span><span class="line">   <span class="string">'Cannot find compiled Mex.\nPlease compile at first:  mex -O DGradient.c'</span>);</span></span>
+</pre>

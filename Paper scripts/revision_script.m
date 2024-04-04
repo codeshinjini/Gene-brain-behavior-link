@@ -94,7 +94,7 @@ load demographic; load paper_indices; load Originals/original_volumes.mat;
 VOL = gm_vol; %which volume, choose vol gm_vol wm_vol
 
 %age, gender, volume 
-Z = [(ages(inds==1)-mean(ages(inds==1)))./std(ages(inds==1)) (genders(inds==1)-mean(genders(inds==1)))./std(genders(inds==1)) [VOL(inds==1)-mean(VOL(inds==1))]'./std(VOL(inds==1))]; 
+Z = [(ages(inds==1) genders(inds==1) VOL(inds==1)]; 
 L = group(inds==1)';
 
 cross_validation_script(Z,L); %age, gender, total volumes

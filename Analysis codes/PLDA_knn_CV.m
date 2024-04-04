@@ -180,14 +180,14 @@ accuracy  = 1-sum(t)/numel(actual(:));
 for i = 1:k
     truth = actual(:); truth = (truth==i);  
     pred = predicted(:); pred =(pred==i);
-    CP = classperf(truth,pred); 
-    sensitivity(i) = CP.Sensitivity; 
-    specificity(i) = CP.Specificity; 
-    %[C, order] = confusionmat(truth, pred); 
-    %posInd = find(order == 1); 
-    %negInd = find(order == 0); 
-    %sensitivity(i) = C(posInd, posInd)/(C(posInd,posInd)+C(posInd,negInd)); 
-    %specificity(i) = C(negInd,negInd)/(C(negInd,negInd)+C(negInd,posInd));       
+    %CP = classperf(truth,pred); 
+    %sensitivity(i) = CP.Sensitivity; 
+    %specificity(i) = CP.Specificity; 
+    [C, order] = confusionmat(truth, pred); 
+    posInd = find(order == 1); 
+    negInd = find(order == 0); 
+    sensitivity(i) = C(posInd, posInd)/(C(posInd,posInd)+C(posInd,negInd)); 
+    specificity(i) = C(negInd,negInd)/(C(negInd,negInd)+C(negInd,posInd));       
 end
 
 % % if sc ==1

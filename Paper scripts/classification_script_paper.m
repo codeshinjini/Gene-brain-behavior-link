@@ -4,7 +4,7 @@ addpath 'Analysis codes'
 load demographic; load paper_indices; load Originals/original_volumes.mat;
 
 %age and gender only 
-Z = [(ages(inds==1)-mean(ages(inds==1)))./std(ages(inds==1)) (genders(inds==1)-mean(genders(inds==1)))./std(genders(inds==1)) [vol(inds==1)-mean(vol(inds==1))]'./std(vol(inds==1))]; 
+Z = [ages(inds==1) (genders(inds==1) vol(inds==1)]; 
 L = group(inds==1)';
 
 
